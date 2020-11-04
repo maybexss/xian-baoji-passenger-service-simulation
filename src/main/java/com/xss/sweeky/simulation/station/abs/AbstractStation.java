@@ -172,7 +172,7 @@ public abstract class AbstractStation {
     public List<AbstractCar> getAndRemoveArrivalCars() {
         List<AbstractCar> arrivalCarList = new ArrayList<>();
         arrivalCarList.addAll(arrivalCars);
-        arrivalCars.clear();
+        this.arrivalCars.clear();
 
         return arrivalCarList;
     }
@@ -194,7 +194,7 @@ public abstract class AbstractStation {
 
 
     /**
-     * 车辆出战
+     * 车辆出站
      *
      * @param time 当前时间
      */

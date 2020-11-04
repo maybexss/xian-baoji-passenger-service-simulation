@@ -55,6 +55,11 @@ public class Passenger {
         }
     }
 
+    /**
+     * 生成随机姓名 (姓+名)
+     *
+     * @return 随机姓名
+     */
     private String generateName() {
         int surnameIndex = random.nextInt(SURNAME.length);
         int lastNameIndex = random.nextInt(LAST_NAME.length);

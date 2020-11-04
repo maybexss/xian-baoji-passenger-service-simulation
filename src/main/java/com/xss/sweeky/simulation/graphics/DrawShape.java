@@ -41,13 +41,15 @@ public class DrawShape {
     public void paintStation(Graphics g) {
         g.setColor(Color.MAGENTA);
 
-        // 绘制两个终点站台
+        // 绘制宝鸡终点站台
         g.drawString(BaojiStation.STATION_NAME, 10, 25);
         g.drawRect(10, 10, 60, 20);
 
+        // 绘制西安终点站台
         g.drawString(XianStation.STATION_NAME, 1190, 25);
         g.drawRect(1190, 10, 60, 20);
 
+        // 绘制各个站站点信息
         for (Destination destination : Destination.values()) {
             g.setColor(Color.MAGENTA);
             g.drawString(destination.getDescription(), destination.getAbscissa().intValue(), destination.getOrdinateBaoji().intValue() + 15);
