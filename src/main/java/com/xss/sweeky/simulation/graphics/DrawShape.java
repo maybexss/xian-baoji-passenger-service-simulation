@@ -97,7 +97,7 @@ public class DrawShape {
                     g.drawString(waitPassengers, 1260, 25);
 
                     g.setColor(Color.BLUE);
-                    g.drawString(totalIncome, 1360, 25);
+                    g.drawString(totalIncome, 1350, 25);
 
                     g.setColor(Color.DARK_GRAY);
                     for (Destination destination : Destination.values()) {
@@ -108,7 +108,7 @@ public class DrawShape {
                                 waitPassengerDestinationMap.computeIfAbsent(destination, k -> new AtomicInteger(0)).get() + " / " +
                                 totalPassengerDestinationMap.computeIfAbsent(destination, k -> new AtomicInteger(0)).get();
                         g.drawString(currentWaitPassengerInfo,
-                                1190 + 100 * (currentPassengerInfoCount % 2),
+                                1190 + 120 * (currentPassengerInfoCount % 2),
                                 50 + 20 * (currentPassengerInfoCount / 2));
                         currentPassengerInfoCount++;
                     }
@@ -128,7 +128,7 @@ public class DrawShape {
                     g.drawString(waitPassengers, 80, 25);
 
                     g.setColor(Color.BLUE);
-                    g.drawString(totalIncome, 185, 25);
+                    g.drawString(totalIncome, 170, 25);
 
                     g.setColor(Color.DARK_GRAY);
                     for (Destination destination : Destination.values()) {
@@ -139,7 +139,7 @@ public class DrawShape {
                                 waitPassengerDestinationMap.computeIfAbsent(destination, k -> new AtomicInteger(0)).get() + " / " +
                                 totalPassengerDestinationMap.computeIfAbsent(destination, k -> new AtomicInteger(0)).get();
                         g.drawString(currentWaitPassengerInfo,
-                                10 + 100 * (currentPassengerInfoCount % 2),
+                                10 + 120 * (currentPassengerInfoCount % 2),
                                 50 + 20 * (currentPassengerInfoCount / 2));
                         currentPassengerInfoCount++;
                     }
