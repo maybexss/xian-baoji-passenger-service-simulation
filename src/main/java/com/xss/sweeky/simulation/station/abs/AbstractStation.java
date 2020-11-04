@@ -263,7 +263,7 @@ public abstract class AbstractStation {
         if (!time.illegalDepartTime()) {
             int passengers;
             if (this.waitPassengers.size() >= MAX_WAIT_PASSENGERS_NUMBER) {
-                passengers = random.nextInt(MAX_WAIT_PASSENGERS_GENERATE_NUMBER - 1);
+                passengers = random.nextInt(MAX_WAIT_PASSENGERS_GENERATE_NUMBER - 2);
             } else {
                 passengers = random.nextInt(MAX_WAIT_PASSENGERS_GENERATE_NUMBER);
             }
