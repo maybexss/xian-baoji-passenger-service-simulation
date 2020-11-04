@@ -68,7 +68,7 @@ public class HourMinuteTime {
      *
      * @return 判断结果
      */
-    public boolean showRemovePassengerInfo() {
+    public boolean shouldRemovePassengerInfo() {
         return count % (COUNT_MINUS / 2) == 0;
     }
 

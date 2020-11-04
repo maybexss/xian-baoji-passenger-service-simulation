@@ -116,7 +116,7 @@ public class DrawShape {
                         g.drawString(waitPassengerInfos.get(i), 1190, 120 + 20 * waitPassengerInfoCount);
                         waitPassengerInfoCount++;
                     }
-                    if (time.showRemovePassengerInfo() && waitPassengerInfos.size() > 0) {
+                    if (time.shouldRemovePassengerInfo() && waitPassengerInfos.size() > 0) {
                         waitPassengerInfos.remove(0);
                     }
                     break;
@@ -147,7 +147,7 @@ public class DrawShape {
                         g.drawString(waitPassengerInfos.get(i), 10, 350 + 20 * waitPassengerInfoCount);
                         waitPassengerInfoCount++;
                     }
-                    if (time.showRemovePassengerInfo() && waitPassengerInfos.size() > 0) {
+                    if (time.shouldRemovePassengerInfo() && waitPassengerInfos.size() > 0) {
                         waitPassengerInfos.remove(0);
                     }
                     break;
