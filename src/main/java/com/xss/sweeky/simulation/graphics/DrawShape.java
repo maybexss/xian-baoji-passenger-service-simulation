@@ -77,8 +77,8 @@ public class DrawShape {
 
     public void paintTime(Graphics g) {
         g.setColor(Color.BLUE);
-        g.drawRect(685, 20, 50, 20);
-        g.drawString(this.time.currentTime(), 695, 35);
+        g.drawRect(685, 20, 57, 20);
+        g.drawString(this.time.currentTime(), 690, 35);
     }
 
     public void paintWaitingPassengers(Graphics g) {

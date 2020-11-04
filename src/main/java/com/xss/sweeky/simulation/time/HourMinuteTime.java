@@ -88,7 +88,7 @@ public class HourMinuteTime {
         if (minuteStr.length() <= 1) {
             sb.append("0");
         }
-        sb.append(minuteStr);
+        sb.append(minuteStr).append(":00");
 
         return sb.toString();
     }
