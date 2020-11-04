@@ -128,7 +128,7 @@ public class DrawShape {
                     g.drawString(waitPassengers, 80, 25);
 
                     g.setColor(Color.BLUE);
-                    g.drawString(totalIncome, 165, 25);
+                    g.drawString(totalIncome, 185, 25);
 
                     g.setColor(Color.DARK_GRAY);
                     for (Destination destination : Destination.values()) {
