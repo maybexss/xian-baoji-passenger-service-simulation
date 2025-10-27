@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 public class SimulationTask implements Runnable {
-    private List<AbstractStation> stations;
-    private HourMinuteTime time;
-    private MainFrame mainFrame;
+    private final List<AbstractStation> stations;
+    private final HourMinuteTime time;
+    private final MainFrame mainFrame;
 
     public SimulationTask(List<AbstractStation> stations, HourMinuteTime time, MainFrame mainFrame) {
         this.stations = stations;
@@ -41,14 +41,14 @@ public class SimulationTask implements Runnable {
         Map<Direction, List<AbstractCar>> arrivalCarMap = new HashMap<>(stations.size());
         for (AbstractStation station : stations) {
             List<AbstractCar> arrivalCars = station.getAndRemoveArrivalCars();
-            if (arrivalCars.size() > 0) {
+            if (!arrivalCars.isEmpty()) {
                 Direction direction = Direction.XI_AN_TO_BAO_JI.equals(station.getDirection()) ?
                         Direction.BAO_JI_TO_XI_AN : Direction.XI_AN_TO_BAO_JI;
                 arrivalCarMap.computeIfAbsent(direction, k -> new ArrayList<>()).addAll(arrivalCars);
             }
         }
 
-        if (arrivalCarMap.size() > 0) {
+        if (!arrivalCarMap.isEmpty()) {
             for (AbstractStation station : stations) {
                 if (arrivalCarMap.containsKey(station.getDirection())) {
                     station.addArrivalCars(arrivalCarMap.get(station.getDirection()), time);

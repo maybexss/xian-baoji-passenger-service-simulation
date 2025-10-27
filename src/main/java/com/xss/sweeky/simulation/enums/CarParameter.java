@@ -15,27 +15,27 @@ public enum CarParameter {
     /**
      * 类型
      */
-    private String type;
+    private final String type;
 
     /**
      * 车牌
      */
-    private String plate;
+    private final String plate;
 
     /**
      * 车辆类型描述
      */
-    private String description;
+    private final String description;
 
     /**
      * 准坐人数
      */
-    private int seats;
+    private final int seats;
 
     /**
      * 车辆速度(公里/分钟)
      */
-    private double speed;
+    private final double speed;
 
     CarParameter(String type, String plate, String description, int seats, double speed) {
         this.type = type;
@@ -49,39 +49,19 @@ public enum CarParameter {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getPlate() {
         return plate;
-    }
-
-    public void setPlate(String plate) {
-        this.plate = plate;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public int getSeats() {
         return seats;
     }
 
-    public void setSeats(int seats) {
-        this.seats = seats;
-    }
-
     public double getSpeed() {
         return speed;
-    }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
     }
 }

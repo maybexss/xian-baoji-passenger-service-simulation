@@ -23,8 +23,8 @@ public class CarRunningSimulation {
     private static final int BAO_JI_IVECO_NUMBER = 16;
     private static AbstractStation xianStation, baojiStation;
     private static HourMinuteTime time;
-    private MainFrame mainFrame;
-    private ScheduledExecutorService executorService;
+    private final MainFrame mainFrame;
+    private final ScheduledExecutorService executorService;
 
     public CarRunningSimulation() {
         xianStation = XianStation.getInstance(XI_AN_VOLVO_NUMBER, XI_AN_IVECO_NUMBER);

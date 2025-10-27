@@ -7,12 +7,7 @@ import com.xss.sweeky.simulation.enums.Direction;
 import com.xss.sweeky.simulation.passenger.Passenger;
 import com.xss.sweeky.simulation.time.HourMinuteTime;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class AbstractCar {
     /**
@@ -23,12 +18,12 @@ public abstract class AbstractCar {
     /**
      * 车辆参数
      */
-    private CarParameter parameter;
+    private final CarParameter parameter;
 
     /**
      * 车辆编号
      */
-    private int number;
+    private final int number;
 
     /**
      * 横坐标
@@ -48,12 +43,12 @@ public abstract class AbstractCar {
     /**
      * 乘客
      */
-    private Map<String, List<Passenger>> passengers = new HashMap<>(16);
+    private final Map<String, List<Passenger>> passengers = new HashMap<>(16);
 
     /**
      * 目的地列表
      */
-    private List<Destination> destinations = new ArrayList<>(Destination.values().length);
+    private final List<Destination> destinations = new ArrayList<>(Destination.values().length);
 
     /**
      * 车辆当前状态
@@ -113,7 +108,7 @@ public abstract class AbstractCar {
         if (status == CarStatus.STOP_ONE_MINUTE.getStatus()) {
             if (time.legalTime()) {
                 // 乘客下车
-                Destination destination = destinations.remove(0);
+                Destination destination = destinations.removeFirst();
                 int offPassengers = getOff(destination);
                 System.out.println("车辆(" + parameter.getPlate() + "-" + number + ") 到达 <" + destination.getDescription() +
                         ">, 有乘客下车, 下车人数: " + offPassengers + ", 当前时间: " + time.currentTime());
@@ -121,7 +116,7 @@ public abstract class AbstractCar {
             }
         } else if (status == CarStatus.WAIT_TO_RUN.getStatus()) {
             if (time.legalTime()) {
-                if (destinations.size() <= 0) {
+                if (destinations.isEmpty()) {
                     // 车辆到达终点站
                     System.out.println("车辆(" + parameter.getPlate() + "-" + number + ") 到达 终点站, 当前时间: " + time.currentTime());
                     setStatus(CarStatus.ARRIVAL);
@@ -132,8 +127,8 @@ public abstract class AbstractCar {
         } else if (status == CarStatus.RUNNING.getStatus()) {
             switch (direction) {
                 case XI_AN_TO_BAO_JI:
-                    if (destinations.size() > 0) {
-                        Destination destination = destinations.get(0);
+                    if (!destinations.isEmpty()) {
+                        Destination destination = destinations.getFirst();
                         if (abscissa.compareTo(destination.getAbscissa()) <= 0) {
                             arrivedStation(destination, time);
                         }
@@ -142,8 +137,8 @@ public abstract class AbstractCar {
                     break;
                 case BAO_JI_TO_XI_AN:
                 default:
-                    if (destinations.size() > 0) {
-                        Destination destination = destinations.get(0);
+                    if (!destinations.isEmpty()) {
+                        Destination destination = destinations.getFirst();
                         if (abscissa.compareTo(destination.getAbscissa()) >= 0) {
                             arrivedStation(destination, time);
                         }
@@ -178,16 +173,8 @@ public abstract class AbstractCar {
         return parameter;
     }
 
-    public void setParameter(CarParameter parameter) {
-        this.parameter = parameter;
-    }
-
     public int getNumber() {
         return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
     }
 
     public Double getAbscissa() {
@@ -206,28 +193,12 @@ public abstract class AbstractCar {
         this.ordinate = ordinate;
     }
 
-    public Direction getDirection() {
-        return direction;
-    }
-
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
 
     public Map<String, List<Passenger>> getPassengers() {
         return passengers;
-    }
-
-    public void setPassengers(Map<String, List<Passenger>> passengers) {
-        this.passengers = passengers;
-    }
-
-    public List<Destination> getDestinations() {
-        return destinations;
-    }
-
-    public void setDestinations(List<Destination> destinations) {
-        this.destinations = destinations;
     }
 
     public CarStatus getStatus() {
@@ -268,7 +239,7 @@ public abstract class AbstractCar {
             this.destinations.sort(Comparator.comparing(Destination::getOrder));
         }
 
-        this.destinations.remove(0);
+        this.destinations.removeFirst();
     }
 
     /**
@@ -278,7 +249,7 @@ public abstract class AbstractCar {
      * @return 是否有乘客的目的地为当前目的地
      */
     private boolean hasPassengerArrived(Destination destination) {
-        return passengers.containsKey(destination.getStation()) && passengers.get(destination.getStation()).size() > 0;
+        return passengers.containsKey(destination.getStation()) && !passengers.get(destination.getStation()).isEmpty();
     }
 
     /**
@@ -292,8 +263,8 @@ public abstract class AbstractCar {
             // 有乘客到达目的地, 则停车, 否则直接行驶不停
             setStatus(CarStatus.STOP_ONE_MINUTE);
         } else {
-            destinations.remove(0);
-            if (destinations.size() <= 0) {
+            destinations.removeFirst();
+            if (destinations.isEmpty()) {
                 setStatus(CarStatus.WAIT_TO_RUN);
             }
             System.out.println("车辆(" + parameter.getPlate() + "-" + number + ") 到达 <" + destination.getDescription() +

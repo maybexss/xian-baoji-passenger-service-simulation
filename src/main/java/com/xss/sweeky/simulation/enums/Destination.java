@@ -44,52 +44,52 @@ public enum Destination {
     /**
      * 站点
      */
-    private String station;
+    private final String station;
 
     /**
      * 站点名称描述
      */
-    private String description;
+    private final String description;
 
     /**
      * 排序号
      */
-    private Integer order;
+    private final Integer order;
 
     /**
      * 站横坐标
      */
-    private Double abscissa;
+    private final Double abscissa;
 
     /**
      * 宝鸡出发纵坐标
      */
-    private Double ordinateBaoji;
+    private final Double ordinateBaoji;
 
     /**
      * 西安出发纵坐标
      */
-    private Double ordinateXian;
+    private final Double ordinateXian;
 
     /**
      * 站台宽度
      */
-    private Double width;
+    private final Double width;
 
     /**
      * 站台高度
      */
-    private Double height;
+    private final Double height;
 
     /**
      * 从西安出发的票价
      */
-    private Double priceFromXian;
+    private final Double priceFromXian;
 
     /**
      * 从宝鸡出发的票价
      */
-    private Double priceFromBaoji;
+    private final Double priceFromBaoji;
 
     Destination(String station, String description, Integer order, Double abscissa,
                 Double ordinateBaoji, Double ordinateXian, Double width, Double height,
@@ -125,79 +125,32 @@ public enum Destination {
         return station;
     }
 
-    public void setStation(String station) {
-        this.station = station;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Integer getOrder() {
         return order;
     }
 
-    public void setOrder(Integer order) {
-        this.order = order;
-    }
-
     public Double getAbscissa() {
         return abscissa;
-    }
-
-    public void setAbscissa(Double abscissa) {
-        this.abscissa = abscissa;
     }
 
     public Double getOrdinateBaoji() {
         return ordinateBaoji;
     }
 
-    public void setOrdinateBaoji(Double ordinateBaoji) {
-        this.ordinateBaoji = ordinateBaoji;
-    }
-
     public Double getOrdinateXian() {
         return ordinateXian;
-    }
-
-    public void setOrdinateXian(Double ordinateXian) {
-        this.ordinateXian = ordinateXian;
     }
 
     public Double getWidth() {
         return width;
     }
 
-    public void setWidth(Double width) {
-        this.width = width;
-    }
-
     public Double getHeight() {
         return height;
     }
 
-    public void setHeight(Double height) {
-        this.height = height;
-    }
-
-    public Double getPriceFromXian() {
-        return priceFromXian;
-    }
-
-    public void setPriceFromXian(Double priceFromXian) {
-        this.priceFromXian = priceFromXian;
-    }
-
-    public Double getPriceFromBaoji() {
-        return priceFromBaoji;
-    }
-
-    public void setPriceFromBaoji(Double priceFromBaoji) {
-        this.priceFromBaoji = priceFromBaoji;
-    }
 }

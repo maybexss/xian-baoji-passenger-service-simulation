@@ -3,12 +3,12 @@ package com.xss.sweeky.simulation.graphics;
 import com.xss.sweeky.simulation.station.abs.AbstractStation;
 import com.xss.sweeky.simulation.time.HourMinuteTime;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.WindowConstants;
-import java.awt.BorderLayout;
+import javax.swing.*;
+import java.awt.*;
+import java.io.Serial;
 
 public class MainFrame extends JFrame {
+    @Serial
     private static final long serialVersionUID = -2325914349498593839L;
     private static final int X = 300, Y = 250, WIDTH = 1480, HEIGHT = 650;
 

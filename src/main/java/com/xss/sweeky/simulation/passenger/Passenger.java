@@ -14,9 +14,9 @@ import static com.xss.sweeky.simulation.constants.NameConstant.SURNAME;
 public class Passenger {
     private static final int MAX_NAME_GENERATE_TIMES = 100;
     private static final Random random = new Random();
-    private static Set<String> nameSet = new HashSet<>();
-    private String name;
-    private Destination destination;
+    private static final Set<String> nameSet = new HashSet<>();
+    private final String name;
+    private final Destination destination;
 
     public Passenger(int probability, Direction direction) {
         this.name = generateName();
@@ -81,15 +81,7 @@ public class Passenger {
         return destination;
     }
 
-    public void setDestination(Destination destination) {
-        this.destination = destination;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

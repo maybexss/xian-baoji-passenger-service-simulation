@@ -8,18 +8,16 @@ import com.xss.sweeky.simulation.station.XianStation;
 import com.xss.sweeky.simulation.station.abs.AbstractStation;
 import com.xss.sweeky.simulation.time.HourMinuteTime;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 public class DrawShape {
     private static final int MAX_PASSENGER_INFO_LINE = 8;
-    private HourMinuteTime time;
-    private java.util.List<AbstractStation> stations;
+    private final HourMinuteTime time;
+    private final java.util.List<AbstractStation> stations;
 
     public DrawShape(HourMinuteTime time, java.util.List<AbstractStation> stations) {
         this.time = time;
@@ -72,13 +70,13 @@ public class DrawShape {
     public void paintAuthor(Graphics g) {
         g.setColor(Color.RED);
         g.drawString("XSS ♥ WFM", 520, 35);
-        g.drawString("3Rd Edition", 75, 560);
+        g.drawString("4Th Edition", 75, 560);
     }
 
     public void paintTime(Graphics g) {
-        g.setColor(Color.BLUE);
-        g.drawRect(685, 20, 57, 20);
-        g.drawString(this.time.currentTime(), 690, 35);
+        g.setColor(Color.MAGENTA);
+        g.drawRect(680, 20, 122, 20);
+        g.drawString(this.time.currentTime(), 685, 35);
     }
 
     public void paintWaitingPassengers(Graphics g) {
@@ -89,7 +87,7 @@ public class DrawShape {
             List<String> waitPassengerInfos = station.getWaitPassengerInfos();
             Map<Destination, AtomicInteger> waitPassengerDestinationMap = station.getWaitPassengerDestinationMap();
             Map<Destination, AtomicInteger> totalPassengerDestinationMap = station.getTotalPassengerDestinationMap();
-            int showPassengerInfoSize = waitPassengerInfos.size() >= MAX_PASSENGER_INFO_LINE ? MAX_PASSENGER_INFO_LINE : waitPassengerInfos.size();
+            int showPassengerInfoSize = Math.min(waitPassengerInfos.size(), MAX_PASSENGER_INFO_LINE);
             int waitPassengerInfoCount = 0, currentPassengerInfoCount = 0;
             switch (station.getDirection()) {
                 case XI_AN_TO_BAO_JI:
@@ -118,8 +116,8 @@ public class DrawShape {
                         g.drawString(waitPassengerInfos.get(i), 1190, 120 + 20 * waitPassengerInfoCount);
                         waitPassengerInfoCount++;
                     }
-                    if (time.shouldRemovePassengerInfo() && waitPassengerInfos.size() > 0) {
-                        waitPassengerInfos.remove(0);
+                    if (time.shouldRemovePassengerInfo() && !waitPassengerInfos.isEmpty()) {
+                        waitPassengerInfos.removeFirst();
                     }
                     break;
                 case BAO_JI_TO_XI_AN:
@@ -149,8 +147,8 @@ public class DrawShape {
                         g.drawString(waitPassengerInfos.get(i), 10, 350 + 20 * waitPassengerInfoCount);
                         waitPassengerInfoCount++;
                     }
-                    if (time.shouldRemovePassengerInfo() && waitPassengerInfos.size() > 0) {
-                        waitPassengerInfos.remove(0);
+                    if (time.shouldRemovePassengerInfo() && !waitPassengerInfos.isEmpty()) {
+                        waitPassengerInfos.removeFirst();
                     }
                     break;
             }
@@ -169,13 +167,14 @@ public class DrawShape {
             List<AbstractCar> volvoCars = station.getRunningCars()
                     .stream()
                     .filter(car -> CarParameter.VOLVO.equals(car.getParameter()))
-                    .collect(Collectors.toList());
+                    .toList();
 
             for (AbstractCar volvoCar : volvoCars) {
                 g.setColor(Color.ORANGE);
                 int x = volvoCar.getAbscissa().intValue();
                 int y = volvoCar.getOrdinate().intValue();
                 g.drawRect(x, y, 50, 30);
+                g.setColor(Color.BLACK);
                 g.drawArc(x + 8, y + 30, 8, 8, 0, 360);
                 g.drawArc(x + 32, y + 30, 8, 8, 0, 360);
                 g.setColor(Color.RED);
@@ -187,12 +186,13 @@ public class DrawShape {
             List<AbstractCar> ivecoCars = station.getRunningCars()
                     .stream()
                     .filter(car -> CarParameter.IVECO.equals(car.getParameter()))
-                    .collect(Collectors.toList());
+                    .toList();
             for (AbstractCar ivecoCar : ivecoCars) {
                 g.setColor(Color.ORANGE);
                 int x = ivecoCar.getAbscissa().intValue();
                 int y = ivecoCar.getOrdinate().intValue();
                 g.drawRect(x, y, 50, 30);
+                g.setColor(Color.BLACK);
                 g.drawArc(x + 8, y + 30, 8, 8, 0, 360);
                 g.drawArc(x + 32, y + 30, 8, 8, 0, 360);
                 g.setColor(Color.RED);

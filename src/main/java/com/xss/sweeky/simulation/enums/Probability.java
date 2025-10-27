@@ -64,17 +64,17 @@ public enum Probability {
     /**
      * 概率起始值
      */
-    private int from;
+    private final int from;
 
     /**
      * 概率结束值
      */
-    private int to;
+    private final int to;
 
     /**
      * 目的地
      */
-    private Destination destination;
+    private final Destination destination;
 
     Probability(int from, int to, Destination destination) {
         this.from = from;
@@ -86,23 +86,11 @@ public enum Probability {
         return from;
     }
 
-    public void setFrom(int from) {
-        this.from = from;
-    }
-
     public int getTo() {
         return to;
     }
 
-    public void setTo(int to) {
-        this.to = to;
-    }
-
     public Destination getDestination() {
         return destination;
-    }
-
-    public void setDestination(Destination destination) {
-        this.destination = destination;
     }
 }

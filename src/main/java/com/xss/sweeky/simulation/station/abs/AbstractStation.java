@@ -10,16 +10,7 @@ import com.xss.sweeky.simulation.enums.Direction;
 import com.xss.sweeky.simulation.passenger.Passenger;
 import com.xss.sweeky.simulation.time.HourMinuteTime;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class AbstractStation {
@@ -76,7 +67,7 @@ public abstract class AbstractStation {
     /**
      * 车辆行驶方向
      */
-    private Direction direction;
+    private final Direction direction;
 
     /**
      * 初始站内沃尔沃车辆数
@@ -91,12 +82,12 @@ public abstract class AbstractStation {
     /**
      * 汽车站名称
      */
-    private String name;
+    private final String name;
 
     /**
      * 站内车辆队列
      */
-    private Map<String, List<AbstractCar>> waitCars = new HashMap<>(4);
+    private final Map<String, List<AbstractCar>> waitCars = new HashMap<>(4);
 
     /**
      * 候车乘客队列
@@ -106,17 +97,17 @@ public abstract class AbstractStation {
     /**
      * 行驶中的车辆队列
      */
-    private List<AbstractCar> runningCars = new ArrayList<>();
+    private final List<AbstractCar> runningCars = new ArrayList<>();
 
     /**
      * 已到终点站的车辆队列
      */
-    private List<AbstractCar> arrivalCars = new ArrayList<>();
+    private final List<AbstractCar> arrivalCars = new ArrayList<>();
 
     /**
      * 等待乘客信息
      */
-    private List<String> waitPassengerInfos = new ArrayList<>();
+    private final List<String> waitPassengerInfos = new ArrayList<>();
 
     /**
      * 总收入
@@ -131,22 +122,20 @@ public abstract class AbstractStation {
     /**
      * 当前以各个站点为目的地的乘客统计信息
      */
-    private Map<Destination, AtomicInteger> waitPassengerDestinationMap = new HashMap<>(Destination.values().length);
+    private final Map<Destination, AtomicInteger> waitPassengerDestinationMap = new HashMap<>(Destination.values().length);
 
     /**
      * 以各个站点为目的地的乘客总的统计信息
      */
-    private Map<Destination, AtomicInteger> totalPassengerDestinationMap = new HashMap<>(Destination.values().length);
+    private final Map<Destination, AtomicInteger> totalPassengerDestinationMap = new HashMap<>(Destination.values().length);
 
     /**
      * 随机数(用于生成乘客)
      */
-    private Random random = new Random();
+    private final Random random = new Random();
 
-    /**
-     * 初始化的车辆横纵坐标
-     */
-    private Double initVolvoAbscissa, initVolvoOrdinate, initIvecoAbscissa, initIvecoOrdinate;
+    private final Double initVolvoOrdinate;
+    private final Double initIvecoOrdinate;
 
     public AbstractStation(String name, Direction direction, int volvoNumber, int ivecoNumber,
                            Double initVolvoAbscissa, Double incrementVolvoAbscissa, Double initVolvoOrdinate,
@@ -155,9 +144,7 @@ public abstract class AbstractStation {
         this.direction = direction;
         this.INITIAL_VOLVO_NUMBER = volvoNumber;
         this.INITIAL_IVECO_NUMBER = ivecoNumber;
-        this.initVolvoAbscissa = initVolvoAbscissa;
         this.initVolvoOrdinate = initVolvoOrdinate;
-        this.initIvecoAbscissa = initIvecoAbscissa;
         this.initIvecoOrdinate = initIvecoOrdinate;
         initVolvoCars(initVolvoAbscissa, incrementVolvoAbscissa, initVolvoOrdinate);
         initIvecoCars(initIvecoAbscissa, incrementIvecoAbscissa, initIvecoOrdinate, incrementIvecoOrdinate);
@@ -170,8 +157,7 @@ public abstract class AbstractStation {
      * @return 已到终点站的车辆
      */
     public List<AbstractCar> getAndRemoveArrivalCars() {
-        List<AbstractCar> arrivalCarList = new ArrayList<>();
-        arrivalCarList.addAll(arrivalCars);
+        List<AbstractCar> arrivalCarList = new ArrayList<>(arrivalCars);
         this.arrivalCars.clear();
 
         return arrivalCarList;
@@ -201,12 +187,12 @@ public abstract class AbstractStation {
     public void carExitStation(HourMinuteTime time) {
         List<AbstractCar> carList = new ArrayList<>();
         int waitPassengerSize = this.waitPassengers.size();
-        if (!time.illegalDepartTime()) {
+        if (time.legalDepartTime()) {
             int minute = time.getMinute();
             if (VOLVO_EXIT_STATION_TIME_IN_MINUTE.contains(minute) && waitPassengerSize > 0) {
                 List<AbstractCar> volvoCarsList = waitCars.computeIfAbsent(CarParameter.VOLVO.getType(), k -> new ArrayList<>());
-                if (volvoCarsList.size() > 0) {
-                    AbstractCar car = volvoCarsList.remove(0);
+                if (!volvoCarsList.isEmpty()) {
+                    AbstractCar car = volvoCarsList.removeFirst();
                     car.exitStation(this.initVolvoOrdinate);
                     carList.add(car);
                     waitPassengerSize -= car.getParameter().getSeats();
@@ -215,8 +201,8 @@ public abstract class AbstractStation {
 
             if (IVECO_EXIT_STATION_TIME_IN_MINUTE.contains(minute) && waitPassengerSize > 0) {
                 List<AbstractCar> ivecoCarsList = waitCars.computeIfAbsent(CarParameter.IVECO.getType(), k -> new ArrayList<>());
-                if (ivecoCarsList.size() > 0) {
-                    AbstractCar car = ivecoCarsList.remove(0);
+                if (!ivecoCarsList.isEmpty()) {
+                    AbstractCar car = ivecoCarsList.removeFirst();
                     car.exitStation(this.initIvecoOrdinate);
                     carList.add(car);
                 }
@@ -225,9 +211,9 @@ public abstract class AbstractStation {
 
         for (AbstractCar car : carList) {
             // 乘客上车
-            int passengers = waitPassengers.size() >= car.getParameter().getSeats() ? car.getParameter().getSeats() : waitPassengers.size();
+            int passengers = Math.min(waitPassengers.size(), car.getParameter().getSeats());
             for (int i = 0; i < passengers; i++) {
-                Passenger passenger = waitPassengers.remove(0);
+                Passenger passenger = waitPassengers.removeFirst();
                 car.getOn(passenger);
                 waitPassengerDestinationMap.computeIfAbsent(passenger.getDestination(), k -> new AtomicInteger(0)).decrementAndGet();
             }
@@ -260,7 +246,7 @@ public abstract class AbstractStation {
      * @param time 当前时间
      */
     public void generateWaitPassengers(HourMinuteTime time) {
-        if (!time.illegalDepartTime()) {
+        if (time.legalGeneratePassengerTime()) {
             int passengers;
             if (this.waitPassengers.size() >= MAX_WAIT_PASSENGERS_NUMBER / 2) {
                 passengers = random.nextInt(MAX_WAIT_PASSENGERS_GENERATE_NUMBER - 1);
@@ -328,88 +314,16 @@ public abstract class AbstractStation {
         return direction;
     }
 
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Map<String, List<AbstractCar>> getWaitCars() {
         return waitCars;
-    }
-
-    public void setWaitCars(Map<String, List<AbstractCar>> waitCars) {
-        this.waitCars = waitCars;
     }
 
     public List<Passenger> getWaitPassengers() {
         return waitPassengers;
     }
 
-    public void setWaitPassengers(List<Passenger> waitPassengers) {
-        this.waitPassengers = waitPassengers;
-    }
-
     public List<AbstractCar> getRunningCars() {
         return runningCars;
-    }
-
-    public void setRunningCars(List<AbstractCar> runningCars) {
-        this.runningCars = runningCars;
-    }
-
-    public List<AbstractCar> getArrivalCars() {
-        return arrivalCars;
-    }
-
-    public void setArrivalCars(List<AbstractCar> arrivalCars) {
-        this.arrivalCars = arrivalCars;
-    }
-
-    public Random getRandom() {
-        return random;
-    }
-
-    public void setRandom(Random random) {
-        this.random = random;
-    }
-
-    public Double getInitVolvoAbscissa() {
-        return initVolvoAbscissa;
-    }
-
-    public void setInitVolvoAbscissa(Double initVolvoAbscissa) {
-        this.initVolvoAbscissa = initVolvoAbscissa;
-    }
-
-    public Double getInitVolvoOrdinate() {
-        return initVolvoOrdinate;
-    }
-
-    public void setInitVolvoOrdinate(Double initVolvoOrdinate) {
-        this.initVolvoOrdinate = initVolvoOrdinate;
-    }
-
-    public Double getInitIvecoAbscissa() {
-        return initIvecoAbscissa;
-    }
-
-    public void setInitIvecoAbscissa(Double initIvecoAbscissa) {
-        this.initIvecoAbscissa = initIvecoAbscissa;
-    }
-
-    public Double getInitIvecoOrdinate() {
-        return initIvecoOrdinate;
-    }
-
-    public void setInitIvecoOrdinate(Double initIvecoOrdinate) {
-        this.initIvecoOrdinate = initIvecoOrdinate;
     }
 
     public List<String> getWaitPassengerInfos() {
@@ -420,35 +334,15 @@ public abstract class AbstractStation {
         return totalIncome;
     }
 
-    public void setTotalIncome(Double totalIncome) {
-        this.totalIncome = totalIncome;
-    }
-
-    public void setWaitPassengerInfos(List<String> waitPassengerInfos) {
-        this.waitPassengerInfos = waitPassengerInfos;
-    }
-
     public int getTotalPassengers() {
         return totalPassengers;
-    }
-
-    public void setTotalPassengers(int totalPassengers) {
-        this.totalPassengers = totalPassengers;
     }
 
     public Map<Destination, AtomicInteger> getWaitPassengerDestinationMap() {
         return waitPassengerDestinationMap;
     }
 
-    public void setWaitPassengerDestinationMap(Map<Destination, AtomicInteger> waitPassengerDestinationMap) {
-        this.waitPassengerDestinationMap = waitPassengerDestinationMap;
-    }
-
     public Map<Destination, AtomicInteger> getTotalPassengerDestinationMap() {
         return totalPassengerDestinationMap;
-    }
-
-    public void setTotalPassengerDestinationMap(Map<Destination, AtomicInteger> totalPassengerDestinationMap) {
-        this.totalPassengerDestinationMap = totalPassengerDestinationMap;
     }
 }
