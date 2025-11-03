@@ -20,7 +20,7 @@ public class CarRunningSimulation {
     private static final int XI_AN_VOLVO_NUMBER = 5;
     private static final int XI_AN_IVECO_NUMBER = 15;
     private static final int BAO_JI_VOLVO_NUMBER = 5;
-    private static final int BAO_JI_IVECO_NUMBER = 16;
+    private static final int BAO_JI_IVECO_NUMBER = 15;
     private static AbstractStation xianStation, baojiStation;
     private static HourMinuteTime time;
     private final MainFrame mainFrame;

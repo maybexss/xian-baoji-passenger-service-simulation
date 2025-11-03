@@ -37,7 +37,7 @@ public class BaojiStation extends AbstractStation {
     /**
      * 初始化依维柯纵坐标
      */
-    private static final Double INIT_IVECO_ORDINATE = 180D;
+    private static final Double INIT_IVECO_ORDINATE = 190D;
 
     /**
      * 依维柯增量纵坐标

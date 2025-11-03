@@ -248,7 +248,7 @@ public abstract class AbstractStation {
     public void generateWaitPassengers(HourMinuteTime time) {
         if (time.legalGeneratePassengerTime()) {
             int passengers;
-            if (this.waitPassengers.size() >= MAX_WAIT_PASSENGERS_NUMBER / 2) {
+            if (this.waitPassengers.size() > MAX_WAIT_PASSENGERS_NUMBER / 2) {
                 passengers = random.nextInt(MAX_WAIT_PASSENGERS_GENERATE_NUMBER - 1);
             } else {
                 passengers = random.nextInt(MAX_WAIT_PASSENGERS_GENERATE_NUMBER);
@@ -291,7 +291,7 @@ public abstract class AbstractStation {
 
     private void initWaitPassengers() {
         //  初始化候车乘客
-        int passengers = this.random.nextInt(INIT_WAITING_PASSENGERS) + 1;
+        int passengers = this.random.nextInt(INIT_WAITING_PASSENGERS / 2) + 1;
         this.waitPassengers = new ArrayList<>(passengers);
         this.addWaitPassengers(passengers);
     }

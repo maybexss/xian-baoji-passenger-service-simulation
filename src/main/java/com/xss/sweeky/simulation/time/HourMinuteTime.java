@@ -33,11 +33,6 @@ public class HourMinuteTime {
      */
     private int count = 0;
 
-    /**
-     * 是否已经初始化
-     */
-    private boolean init = false;
-
     private static HourMinuteTime time;
 
     private HourMinuteTime() {
@@ -74,7 +69,7 @@ public class HourMinuteTime {
      * @return 判断结果
      */
     public boolean legalGeneratePassengerTime() {
-        boolean upperResult = (hour == LAST_TIME_HOUR && minute > 30) || (hour > LAST_TIME_HOUR);
+        boolean upperResult = (hour == LAST_TIME_HOUR && minute > 35) || (hour > LAST_TIME_HOUR);
         boolean lowerResult = (hour < START_TIME_HOUR - 1) || (hour == START_TIME_HOUR - 1 && minute < LAST_TIME_MINUTE - 10);
 
         boolean illegalTime = count % COUNT_MINUS != 0;

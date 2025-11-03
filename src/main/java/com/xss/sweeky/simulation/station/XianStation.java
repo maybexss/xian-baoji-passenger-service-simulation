@@ -37,7 +37,7 @@ public class XianStation extends AbstractStation {
     /**
      * 初始化依维柯纵坐标
      */
-    public static final Double INIT_IVECO_ORDINATE = 400D;
+    public static final Double INIT_IVECO_ORDINATE = 410D;
 
     /**
      * 依维柯增量纵坐标

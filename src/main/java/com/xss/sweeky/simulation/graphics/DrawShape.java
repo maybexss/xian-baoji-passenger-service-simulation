@@ -70,7 +70,7 @@ public class DrawShape {
     public void paintAuthor(Graphics g) {
         g.setColor(Color.RED);
         g.drawString("XSS ♥ WFM", 520, 35);
-        g.drawString("4Th Edition", 75, 560);
+        g.drawString("5Th Edition", 75, 520);
     }
 
     public void paintTime(Graphics g) {
@@ -98,7 +98,9 @@ public class DrawShape {
                     g.drawString(totalIncome, 1350, 25);
 
                     g.setColor(Color.DARK_GRAY);
-                    for (Destination destination : Destination.values()) {
+                    List<Destination> destinations = new ArrayList<>(List.of(Destination.values()));
+                    destinations.sort((o1, o2) -> o2.getOrder().compareTo(o1.getOrder()));
+                    for (Destination destination : destinations) {
                         if (Destination.XI_AN.equals(destination)) {
                             continue;
                         }
@@ -168,15 +170,17 @@ public class DrawShape {
                     .stream()
                     .filter(car -> CarParameter.VOLVO.equals(car.getParameter()))
                     .toList();
-
+            int width = 50, height = 30;
             for (AbstractCar volvoCar : volvoCars) {
                 g.setColor(Color.ORANGE);
                 int x = volvoCar.getAbscissa().intValue();
                 int y = volvoCar.getOrdinate().intValue();
-                g.drawRect(x, y, 50, 30);
+                g.drawRect(x, y, width, height);
                 g.setColor(Color.BLACK);
-                g.drawArc(x + 8, y + 30, 8, 8, 0, 360);
-                g.drawArc(x + 32, y + 30, 8, 8, 0, 360);
+                g.drawArc(x + 7, y + height - 3, 10, 10, 0, 360);
+                g.drawArc(x + 8, y + height - 2, 8, 8, 0, 360);
+                g.drawArc(x + 32, y + height - 3, 10, 10, 0, 360);
+                g.drawArc(x + 33, y + height - 2, 8, 8, 0, 360);
                 g.setColor(Color.RED);
                 g.drawString("车牌:" + CarParameter.VOLVO.getPlate() + "-" + volvoCar.getNumber(), x, y + 10);
                 g.setColor(Color.MAGENTA);
@@ -191,10 +195,12 @@ public class DrawShape {
                 g.setColor(Color.ORANGE);
                 int x = ivecoCar.getAbscissa().intValue();
                 int y = ivecoCar.getOrdinate().intValue();
-                g.drawRect(x, y, 50, 30);
+                g.drawRect(x, y, width, height);
                 g.setColor(Color.BLACK);
-                g.drawArc(x + 8, y + 30, 8, 8, 0, 360);
-                g.drawArc(x + 32, y + 30, 8, 8, 0, 360);
+                g.drawArc(x + 7, y + height - 3, 10, 10, 0, 360);
+                g.drawArc(x + 8, y + height - 2, 8, 8, 0, 360);
+                g.drawArc(x + 32, y + height - 3, 10, 10, 0, 360);
+                g.drawArc(x + 33, y + height - 2, 8, 8, 0, 360);
                 g.setColor(Color.RED);
                 g.drawString("车牌:" + CarParameter.IVECO.getPlate() + "-" + ivecoCar.getNumber(), x, y + 10);
                 g.setColor(Color.MAGENTA);
@@ -206,53 +212,80 @@ public class DrawShape {
     private void drawWaitingVolvoCars(Graphics g, AbstractStation station) {
         List<AbstractCar> volvoCars = station.getWaitCars().computeIfAbsent(CarParameter.VOLVO.getType(), k -> new ArrayList<>());
         int times = volvoCars.size() / AbstractStation.MAX_VOLVO_PER_LINE;
-        int count = 0;
+        int count = 0, initX, initY, width = 40, height = 30;
         switch (station.getDirection()) {
             case XI_AN_TO_BAO_JI:
+                initX = 1190;
                 g.setColor(Color.BLUE);
-                g.drawString(CarParameter.VOLVO.getDescription(), 1190, XianStation.INIT_VOLVO_ORDINATE.intValue() - 10);
+                g.drawString(CarParameter.VOLVO.getDescription(), initX, XianStation.INIT_VOLVO_ORDINATE.intValue() - 10);
                 g.setColor(Color.ORANGE);
                 for (int i = 0; i < times; i++) {
                     for (int j = 0; j < AbstractStation.MAX_VOLVO_PER_LINE; j++) {
                         g.setColor(Color.ORANGE);
-                        g.drawRect(1190 + 40 * j, XianStation.INIT_VOLVO_ORDINATE.intValue() + 40 * i, 40, 30);
+                        int x = initX + 40 * j, y = XianStation.INIT_VOLVO_ORDINATE.intValue() + 40 * i;
+                        g.drawRect(x, y, width, height);
                         g.setColor(Color.RED);
                         g.drawString(CarParameter.VOLVO.getPlate() + "-" + volvoCars.get(count++).getNumber(),
-                                1200 + 40 * j,
-                                XianStation.INIT_VOLVO_ORDINATE.intValue() + 20 + 40 * i);
+                                x + 10,
+                                y + 20);
+                        g.setColor(Color.BLACK);
+                        g.drawArc(x + 7, y + height - 3, 8, 8, 0, 360);
+                        g.drawArc(x + 8, y + height - 2, 6, 6, 0, 360);
+                        g.drawArc(x + 27, y + height - 3, 8, 8, 0, 360);
+                        g.drawArc(x + 28, y + height - 2, 6, 6, 0, 360);
                     }
                 }
 
                 if (volvoCars.size() % AbstractStation.MAX_VOLVO_PER_LINE != 0) {
                     for (int i = 0; i < volvoCars.size() % AbstractStation.MAX_VOLVO_PER_LINE; i++) {
+                        int x = initX + 40 * i, y = XianStation.INIT_VOLVO_ORDINATE.intValue() + 40 * times;
                         g.setColor(Color.ORANGE);
-                        g.drawRect(1190 + 40 * i, XianStation.INIT_VOLVO_ORDINATE.intValue() + 40 * times, 40, 30);
+                        g.drawRect(x, y, width, height);
                         g.setColor(Color.RED);
                         g.drawString(CarParameter.VOLVO.getPlate() + "-" + volvoCars.get(count++).getNumber(),
-                                1200 + 40 * i,
-                                XianStation.INIT_VOLVO_ORDINATE.intValue() + 20 + 40 * times);
+                                x + 10,
+                                y + 20);
+                        g.setColor(Color.BLACK);
+                        g.drawArc(x + 7, y + height - 3, 8, 8, 0, 360);
+                        g.drawArc(x + 8, y + height - 2, 6, 6, 0, 360);
+                        g.drawArc(x + 27, y + height - 3, 8, 8, 0, 360);
+                        g.drawArc(x + 28, y + height - 2, 6, 6, 0, 360);
                     }
                 }
                 break;
             case BAO_JI_TO_XI_AN:
             default:
+                initX = 180;
+                initY = 120;
                 g.setColor(Color.BLUE);
-                g.drawString(CarParameter.VOLVO.getDescription(), 180, 110);
+                g.drawString(CarParameter.VOLVO.getDescription(), initX, initY - 10);
                 for (int i = 0; i < times; i++) {
                     for (int j = 0; j < AbstractStation.MAX_VOLVO_PER_LINE; j++) {
+                        int x = initX - 40 * j, y = initY + 40 * i;
                         g.setColor(Color.ORANGE);
-                        g.drawRect(175 - 40 * j, 120 + 40 * i, 40, 30);
+                        g.drawRect(x, y, width, height);
                         g.setColor(Color.RED);
                         g.drawString(CarParameter.VOLVO.getPlate() + "-" + volvoCars.get(count++).getNumber(), 185 - 40 * j, 140 + 40 * i);
+                        g.setColor(Color.BLACK);
+                        g.drawArc(x + 7, y + height - 3, 8, 8, 0, 360);
+                        g.drawArc(x + 8, y + height - 2, 6, 6, 0, 360);
+                        g.drawArc(x + 27, y + height - 3, 8, 8, 0, 360);
+                        g.drawArc(x + 28, y + height - 2, 6, 6, 0, 360);
                     }
                 }
 
                 if (volvoCars.size() % AbstractStation.MAX_VOLVO_PER_LINE != 0) {
                     for (int i = 0; i < volvoCars.size() % AbstractStation.MAX_VOLVO_PER_LINE; i++) {
+                        int x = initX - 40 * i, y = initY + 40 * times;
                         g.setColor(Color.ORANGE);
-                        g.drawRect(175 - 40 * i, 120 + 40 * times, 40, 30);
+                        g.drawRect(x, y, width, height);
                         g.setColor(Color.RED);
                         g.drawString(CarParameter.VOLVO.getPlate() + "-" + volvoCars.get(count++).getNumber(), 185 - 40 * i, 140 + 40 * times);
+                        g.setColor(Color.BLACK);
+                        g.drawArc(x + 7, y + height - 3, 8, 8, 0, 360);
+                        g.drawArc(x + 8, y + height - 2, 6, 6, 0, 360);
+                        g.drawArc(x + 27, y + height - 3, 8, 8, 0, 360);
+                        g.drawArc(x + 28, y + height - 2, 6, 6, 0, 360);
                     }
                 }
                 break;
@@ -264,56 +297,83 @@ public class DrawShape {
         int volvoTimes = volvoCars.size() / AbstractStation.MAX_VOLVO_PER_LINE - (volvoCars.size() % AbstractStation.MAX_VOLVO_PER_LINE == 0 ? 1 : 0);
         List<AbstractCar> ivecoCars = station.getWaitCars().computeIfAbsent(CarParameter.IVECO.getType(), k -> new ArrayList<>());
         int times = ivecoCars.size() / AbstractStation.MAX_IVECO_PER_LINE;
-        int count = 0;
+        int count = 0, initX, initY, width = 40, height = 30;
         switch (station.getDirection()) {
             case XI_AN_TO_BAO_JI:
+                initX = 1190;
                 g.setColor(Color.BLUE);
-                g.drawString(CarParameter.IVECO.getDescription(), 1190, XianStation.INIT_IVECO_ORDINATE.intValue() - 10 + 40 * volvoTimes);
+                g.drawString(CarParameter.IVECO.getDescription(), initX, XianStation.INIT_IVECO_ORDINATE.intValue() - 10 + 40 * volvoTimes);
                 for (int i = 0; i < times; i++) {
                     for (int j = 0; j < AbstractStation.MAX_IVECO_PER_LINE; j++) {
+                        int x = initX + 40 * j, y = XianStation.INIT_IVECO_ORDINATE.intValue() + 40 * volvoTimes + 45 * i;
                         g.setColor(Color.ORANGE);
-                        g.drawRect(1190 + 40 * j, XianStation.INIT_IVECO_ORDINATE.intValue() + 40 * volvoTimes + 40 * i, 40, 30);
+                        g.drawRect(x, y, width, height);
                         g.setColor(Color.RED);
                         g.drawString(CarParameter.IVECO.getPlate() + "-" + ivecoCars.get(count++).getNumber(),
-                                1200 + 40 * j,
-                                XianStation.INIT_IVECO_ORDINATE.intValue() + 20 + 40 * volvoTimes + 40 * i);
+                                x + 10,
+                                y + 20);
+                        g.setColor(Color.BLACK);
+                        g.drawArc(x + 7, y + height - 3, 8, 8, 0, 360);
+                        g.drawArc(x + 8, y + height - 2, 6, 6, 0, 360);
+                        g.drawArc(x + 27, y + height - 3, 8, 8, 0, 360);
+                        g.drawArc(x + 28, y + height - 2, 6, 6, 0, 360);
                     }
                 }
 
                 if (ivecoCars.size() % AbstractStation.MAX_IVECO_PER_LINE != 0) {
                     for (int i = 0; i < ivecoCars.size() % AbstractStation.MAX_IVECO_PER_LINE; i++) {
+                        int x = initX + 40 * i, y = XianStation.INIT_IVECO_ORDINATE.intValue() + 40 * volvoTimes + 45 * times;
                         g.setColor(Color.ORANGE);
-                        g.drawRect(1190 + 40 * i, XianStation.INIT_IVECO_ORDINATE.intValue() + 40 * volvoTimes + 40 * times, 40, 30);
+                        g.drawRect(x, y, width, height);
                         g.setColor(Color.RED);
                         g.drawString(CarParameter.IVECO.getPlate() + "-" + ivecoCars.get(count++).getNumber(),
-                                1200 + 40 * i,
-                                XianStation.INIT_IVECO_ORDINATE.intValue() + 20 + 40 * volvoTimes + 40 * times);
+                                x + 10,
+                                y + 20);
+                        g.setColor(Color.BLACK);
+                        g.drawArc(x + 7, y + height - 3, 8, 8, 0, 360);
+                        g.drawArc(x + 8, y + height - 2, 6, 6, 0, 360);
+                        g.drawArc(x + 27, y + height - 3, 8, 8, 0, 360);
+                        g.drawArc(x + 28, y + height - 2, 6, 6, 0, 360);
                     }
                 }
                 break;
             case BAO_JI_TO_XI_AN:
             default:
+                initX = 180;
+                initY = 190;
                 g.setColor(Color.BLUE);
-                g.drawString(CarParameter.IVECO.getDescription(), 180, 170 + 40 * volvoTimes);
+                g.drawString(CarParameter.IVECO.getDescription(), initX, initY + 40 * volvoTimes - 10);
                 for (int i = 0; i < times; i++) {
                     for (int j = 0; j < AbstractStation.MAX_IVECO_PER_LINE; j++) {
+                        int x = initX - 40 * j, y = initY + 40 * volvoTimes + 45 * i;
                         g.setColor(Color.ORANGE);
-                        g.drawRect(175 - 40 * j, 180 + 40 * volvoTimes + 40 * i, 40, 30);
+                        g.drawRect(x, y, width, height);
                         g.setColor(Color.RED);
                         g.drawString(CarParameter.IVECO.getPlate() + "-" + ivecoCars.get(count++).getNumber(),
-                                185 - 40 * j,
-                                200 + 40 * volvoTimes + 40 * i);
+                                x + 5,
+                                y + 20);
+                        g.setColor(Color.BLACK);
+                        g.drawArc(x + 7, y + height - 3, 8, 8, 0, 360);
+                        g.drawArc(x + 8, y + height - 2, 6, 6, 0, 360);
+                        g.drawArc(x + 27, y + height - 3, 8, 8, 0, 360);
+                        g.drawArc(x + 28, y + height - 2, 6, 6, 0, 360);
                     }
                 }
 
                 if (ivecoCars.size() % AbstractStation.MAX_IVECO_PER_LINE != 0) {
                     for (int i = 0; i < ivecoCars.size() % AbstractStation.MAX_IVECO_PER_LINE; i++) {
+                        int x = initX - 40 * i, y = initY + 40 * volvoTimes + 45 * times;
                         g.setColor(Color.ORANGE);
-                        g.drawRect(175 - 40 * i, 180 + 40 * volvoTimes + 40 * times, 40, 30);
+                        g.drawRect(x, y, width, height);
                         g.setColor(Color.RED);
                         g.drawString(CarParameter.IVECO.getPlate() + "-" + ivecoCars.get(count++).getNumber(),
-                                185 - 40 * i,
-                                200 + 40 * volvoTimes + 40 * times);
+                                x + 10,
+                                y + 20);
+                        g.setColor(Color.BLACK);
+                        g.drawArc(x + 7, y + height - 3, 8, 8, 0, 360);
+                        g.drawArc(x + 8, y + height - 2, 6, 6, 0, 360);
+                        g.drawArc(x + 27, y + height - 3, 8, 8, 0, 360);
+                        g.drawArc(x + 28, y + height - 2, 6, 6, 0, 360);
                     }
                 }
                 break;
