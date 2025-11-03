@@ -83,7 +83,7 @@ public class HourMinuteTime {
      * @return 判断结果
      */
     public boolean lastDepartTime() {
-        return hour == LAST_TIME_HOUR && minute >= 20;
+        return hour == LAST_TIME_HOUR;
     }
 
     /**
