@@ -78,6 +78,15 @@ public class HourMinuteTime {
     }
 
     /**
+     * 是否是最后一个发车批次
+     *
+     * @return 判断结果
+     */
+    public boolean lastDepartTime() {
+        return hour == LAST_TIME_HOUR && minute >= 20;
+    }
+
+    /**
      * 当前时间片是否合法
      *
      * @return 是否合法时间片

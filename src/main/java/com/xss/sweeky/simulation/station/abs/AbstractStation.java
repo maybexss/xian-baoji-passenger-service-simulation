@@ -253,6 +253,9 @@ public abstract class AbstractStation {
             } else {
                 passengers = random.nextInt(MAX_WAIT_PASSENGERS_GENERATE_NUMBER);
             }
+            if (time.lastDepartTime() && this.waitPassengers.size() + passengers > MAX_WAIT_PASSENGERS_NUMBER) {
+                passengers = 0;
+            }
 
             this.addWaitPassengers(passengers);
             System.out.println(name + " 新增 候车乘客 " + passengers + " 人, 当前时间: " + time.currentTime());
